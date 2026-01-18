@@ -1,4 +1,12 @@
 /* =========================
+   CONSTANTS
+========================= */
+const STORAGE_KEYS = {
+  SIDEBAR: 'sidebarState',
+  CHECKBOXES: 'progressCheckboxes'
+};
+
+/* =========================
    ELEMENT REFERENCES
 ========================= */
 const sidebar = document.getElementById('sidebar');
@@ -6,20 +14,42 @@ const overlay = document.getElementById('overlay');
 const toggleBtn = document.getElementById('toggle-sidebar');
 
 /* =========================
+   INIT
+========================= */
+document.addEventListener('DOMContentLoaded', () => {
+  restoreSidebarState();
+  restoreCheckboxProgress();
+});
+
+/* =========================
    SIDEBAR TOGGLE (MOBILE)
 ========================= */
 if (toggleBtn && sidebar && overlay) {
   toggleBtn.addEventListener('click', () => {
-    sidebar.classList.add('active');
-    overlay.classList.add('active');
+    openSidebar();
   });
 
   overlay.addEventListener('click', closeSidebar);
 }
 
+function openSidebar() {
+  sidebar.classList.add('active');
+  overlay.classList.add('active');
+  localStorage.setItem(STORAGE_KEYS.SIDEBAR, 'open');
+}
+
 function closeSidebar() {
   sidebar?.classList.remove('active');
   overlay?.classList.remove('active');
+  localStorage.setItem(STORAGE_KEYS.SIDEBAR, 'closed');
+}
+
+function restoreSidebarState() {
+  const state = localStorage.getItem(STORAGE_KEYS.SIDEBAR);
+  if (state === 'open') {
+    sidebar?.classList.add('active');
+    overlay?.classList.add('active');
+  }
 }
 
 /* =========================
@@ -50,11 +80,30 @@ document.addEventListener('change', e => {
   if (!e.target.classList.contains('progress-checkbox')) return;
 
   const label = e.target.nextElementSibling;
-  if (!label) return;
+  if (label) {
+    label.style.textDecoration = e.target.checked ? 'line-through' : 'none';
+    label.style.color = e.target.checked ? '#666' : 'inherit';
+  }
 
-  label.style.textDecoration = e.target.checked ? 'line-through' : 'none';
-  label.style.color = e.target.checked ? '#666' : 'inherit';
+  saveCheckboxProgress(e.target);
 });
+
+function saveCheckboxProgress(checkbox) {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.CHECKBOXES)) || {};
+  saved[checkbox.id] = checkbox.checked;
+  localStorage.setItem(STORAGE_KEYS.CHECKBOXES, JSON.stringify(saved));
+}
+
+function restoreCheckboxProgress() {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.CHECKBOXES)) || {};
+
+  document.querySelectorAll('.progress-checkbox').forEach(cb => {
+    if (saved[cb.id]) {
+      cb.checked = true;
+      cb.dispatchEvent(new Event('change'));
+    }
+  });
+}
 
 /* =========================
    SIDEBAR LINK SCROLL
@@ -64,7 +113,6 @@ document.addEventListener('click', e => {
   if (!link) return;
 
   e.preventDefault();
-
   setActiveSidebarLink(link);
 
   const target = document.querySelector(link.getAttribute('href'));
@@ -93,7 +141,7 @@ window.addEventListener('scroll', () => {
   let currentId = '';
 
   sections.forEach(section => {
-    if (pageYOffset >= section.offsetTop - 150) {
+    if (window.pageYOffset >= section.offsetTop - 150) {
       currentId = `#${section.id}`;
     }
   });
@@ -104,4 +152,21 @@ window.addEventListener('scroll', () => {
       link.getAttribute('href') === currentId
     );
   });
+});
+
+/* =========================
+   KEYBOARD SHORTCUTS
+========================= */
+document.addEventListener('keydown', e => {
+  // Ctrl + B → Toggle sidebar
+  if (e.ctrlKey && e.key.toLowerCase() === 'b') {
+    e.preventDefault();
+    sidebar?.classList.toggle('active');
+    overlay?.classList.toggle('active');
+  }
+
+  // Esc → Close sidebar
+  if (e.key === 'Escape') {
+    closeSidebar();
+  }
 });
