@@ -1,6 +1,7 @@
 /**
  * OpenSource Compass - Interactions
- * Scroll animations, smooth scrolling, and dynamic data loading
+ * Scroll animations, smooth scrolling, dynamic data loading
+ * + Skeleton Loader for Home Programs
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -60,13 +61,31 @@ function initSmoothScroll() {
 
 /* =========================
    HOME PAGE PROGRAMS
+   (With Skeleton Loader)
 ========================= */
 function loadHomePrograms() {
   const container = document.getElementById('programs-container');
   if (!container) return;
 
+  // 1️⃣ Show skeleton loader immediately
+  container.innerHTML = Array.from({ length: 3 })
+    .map(
+      () => `
+      <div class="card skeleton">
+        <div class="skeleton-title"></div>
+        <div class="skeleton-text"></div>
+        <div class="skeleton-badge"></div>
+      </div>
+    `
+    )
+    .join('');
+
+  // 2️⃣ Fetch actual data
   fetchPrograms()
-    .then(programs => renderPrograms(programs, container))
+    .then(programs => {
+      renderPrograms(programs, container);
+      initScrollReveal(); // re-attach animation for new cards
+    })
     .catch(() => {
       container.innerHTML = `
         <div class="error-message">
@@ -76,6 +95,9 @@ function loadHomePrograms() {
     });
 }
 
+/* =========================
+   FETCH PROGRAM DATA
+========================= */
 function fetchPrograms() {
   return fetch('../data/programs.json')
     .then(res => {
@@ -84,6 +106,9 @@ function fetchPrograms() {
     });
 }
 
+/* =========================
+   RENDER PROGRAM CARDS
+========================= */
 function renderPrograms(programs, container) {
   container.innerHTML = programs
     .map(

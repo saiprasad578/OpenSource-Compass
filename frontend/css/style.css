@@ -292,3 +292,43 @@ button:focus-visible {
     padding: 3rem 5%;
   }
 }
+ 
+/* Skeleton Loader */
+.skeleton {
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.skeleton-title,
+.skeleton-text,
+.skeleton-badge {
+  background: linear-gradient(
+    90deg,
+    #2a2a2a 25%,
+    #3a3a3a 37%,
+    #2a2a2a 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+  border-radius: 6px;
+}
+
+.skeleton-title {
+  height: 20px;
+  margin-bottom: 10px;
+}
+
+.skeleton-text {
+  height: 14px;
+  margin-bottom: 12px;
+}
+
+.skeleton-badge {
+  height: 18px;
+  width: 60px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
