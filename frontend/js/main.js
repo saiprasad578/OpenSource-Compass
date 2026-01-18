@@ -44,6 +44,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Load Programs from JSON (Solves Issue #64)
     loadHomePagePrograms();
+    
+      // Back to Top Button
+     // Back to Top Button
+   const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+    window.addEventListener("scroll", () => {
+      if (!scrollTopBtn) return;
+
+      if (window.scrollY > 200) {
+         scrollTopBtn.style.display = "block";
+      } else {
+          scrollTopBtn.style.display = "none";
+      }
+    });
+    
+   if (scrollTopBtn) {
+  scrollTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
+}     
 });
 
 // Function to fetch and render programs on the home page
@@ -78,3 +101,4 @@ function loadHomePagePrograms() {
             `;
         });
 }
+
