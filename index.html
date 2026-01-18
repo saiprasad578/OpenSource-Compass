@@ -788,7 +788,7 @@
         Weekly dispatches: program deadlines, maintainer AMAs, contribution
         strategies.
       </p>
-      <form>
+      <form id="sub-form">
         <input type="email" placeholder="Your dev email..." required />
         <button type="submit">
           <i class="fas fa-paper-plane" style="margin-right: 0.4rem"></i
@@ -822,11 +822,11 @@
     </button>
 
     <script>
-  const hamburger = document.getElementById("hamburger");
+  const hamurger = document.getElementById("hamburger");
   const navLinks = document.getElementById("nav-links");
   const navItems = navLinks.querySelectorAll("a");
 
-  hamburger.addEventListener("click", () => {
+  hamurger.addEventListener("click", () => {
     navLinks.classList.toggle("active");
   });
 
@@ -839,7 +839,7 @@
 
   // 🔥 Close menu when clicking outside
   document.addEventListener("click", (e) => {
-    if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+    if (!navLinks.contains(e.target) && !hamurger.contains(e.target)) {
       navLinks.classList.remove("active");
     }
   });
@@ -948,15 +948,39 @@
     <title>OpenSource Compass - Classic Edition</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/ss2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 
 </head>
 
 <body>
-
 <!-- Navbar -->
-<header>
+  <header>
+  <div class="navbar-container">
+    <h1>
+      <i class="fas fa-compass" style="color: var(--primary-gold); margin-right: 0.4rem"></i>
+      OpenSource Compass
+    </h1>
+
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="nav-links" id="nav-links">
+      <a href="/index.html" style="margin-left: 11px;">Home</a>
+      <a href="./frontend/pages/guides.html">Guides</a>
+      <a href="./frontend/pages/programs.html">Programs</a>
+      <a href="./frontend/pages/Resources.html">Resources</a>
+      <a href="./frontend/pages/contributors.html">Contributors</a>
+      <a href="./frontend/pages/faq.html">FAQ</a>
+      <a href="./frontend/pages/Contribute.html">Contribute</a>
+    </div>
+  </div>
+</header>
+
+<!-- <header>
     <h1>OpenSource Compass</h1>
     <div class="hamburger">
         <div></div>
@@ -971,7 +995,7 @@
         <a href="#">Resources</a>
         <a href="#">Contribute</a>
     </nav>
-</header>
+</header> -->
 
 <!-- Hero Section -->
 <section class="hero">
@@ -1151,6 +1175,7 @@
             white-space: nowrap;
             text-transform: uppercase;
             letter-spacing: 0.3px;
+            margin-left: 4px !important;
         }
 
         .nav-links a::before {
@@ -1398,15 +1423,15 @@
             color: rgba(255,255,255,0.9);
             font-size: 1.05rem;
         }
-
+/* 
         .newsletter form {
             max-width: 550px;
             margin: 2.5rem auto 0;
             display: flex;
             gap: 1.2rem;
             justify-content: center;
-        }
-
+        } */
+/* 
         .newsletter input {
             flex: 1;
             max-width: 320px;
@@ -1417,13 +1442,13 @@
             color: white;
             font-size: 0.98rem;
             font-family: 'Inter', sans-serif;
-        }
+        } */
 
         .newsletter input::placeholder {
             color: rgba(255,255,255,0.7);
         }
 
-        .newsletter button {
+        /* .newsletter button {
             background: linear-gradient(135deg, var(--primary-gold), var(--secondary-gold));
             color: var(--deep-navy);
             border: none;
@@ -1436,7 +1461,7 @@
             font-family: 'Inter', sans-serif;
             text-transform: uppercase;
             letter-spacing: 0.3px;
-        }
+        } */
 
         /* Footer - Smaller */
         footer {
@@ -1483,6 +1508,7 @@
             header {
                 padding: 0.9rem 5%;
             }
+          }
 
 .footer-container {
     display: grid;
@@ -1590,7 +1616,13 @@
     0 0 45px rgba(212, 175, 55, 0.4);
   filter: brightness(1.2);
 }
-   
+ 
+@media (max-width: 450px) {
+  #sub-form input{
+    max-width: 180px;
+  } 
+}
+
     </style>
 </head>
 <body>
@@ -1664,19 +1696,19 @@
     <section class="newsletter">
         <h3>Stay Ahead of Open Source</h3>
         <p>Weekly dispatches: program deadlines, maintainer AMAs, contribution strategies.</p>
-        <form>
+        <form id="sub-form">
             <input type="email" placeholder="Your dev email..." required>
             <button type="submit"><i class="fas fa-paper-plane" style="margin-right: 0.4rem;"></i>Subscribe</button>
         </form>
     </section>
 
-    <div id="footer"></div>
+    <div id="footer"></div> 
 
     <button id="scrollTopBtn" title="Back to Top"><i class="fas fa-chevron-up"></i></button>
 
     <script>
         // Smooth scroll animations (unchanged)
-        const observer = new IntersectionObserver((entries) => {
+        const obsrver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
@@ -1684,9 +1716,8 @@
             });
         }, { threshold: 0.15, rootMargin: '0px 0px -100px 0px' });
 
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        document.querySelectorAll('.fade-in').forEach(el => obsrver.observe(el));
 
-        const scrollTopBtn = document.getElementById('scrollTopBtn');
         window.addEventListener('scroll', () => {
             scrollTopBtn.style.display = window.scrollY > 600 ? 'flex' : 'none';
             scrollTopBtn.style.alignItems = 'center';
