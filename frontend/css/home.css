@@ -586,6 +586,40 @@ body.dark-mode .hero-btn-secondary {
 }
 
 /* =========================
+   DARK MODE FIXES
+========================= */
+
+/* Fix Navbar Background in Dark Mode */
+body.dark-mode .navbar, 
+body.dark-mode header {
+    background-color: #1a1a1a; /* Dark Grey instead of White */
+    border-bottom: 1px solid #333;
+}
+
+/* Fix Navbar Links Color */
+body.dark-mode .nav-link,
+body.dark-mode .navbar a {
+    color: #ffffff; /* White text */
+}
+
+/* Fix Cards or Containers that remain white */
+body.dark-mode .card,
+body.dark-mode .container-box {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.5); /* Darker shadow */
+}
+
+/* Fix Inputs and Forms */
+body.dark-mode input, 
+body.dark-mode textarea {
+    background-color: #333;
+    color: #fff;
+    border-color: #555;
+}
+
+
+/* =========================
    RESPONSIVE
 ========================= */
 @media (max-width: 980px) {

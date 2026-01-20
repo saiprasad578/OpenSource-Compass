@@ -582,3 +582,108 @@ body.dark-mode footer.site-footer {
 #level-chain-wrapper::-webkit-scrollbar {
   display: none;
 }
+
+/* =========================
+   DARK MODE FIXES
+========================= */
+
+/* Fix Navbar Background in Dark Mode */
+body.dark-mode .navbar, 
+body.dark-mode header {
+    background-color: #1a1a1a; /* Dark Grey instead of White */
+    border-bottom: 1px solid #333;
+}
+
+/* Fix Navbar Links Color */
+body.dark-mode .nav-link,
+body.dark-mode .navbar a {
+    color: #ffffff; /* White text */
+}
+
+/* Fix Cards or Containers that remain white */
+body.dark-mode .card,
+body.dark-mode .container-box {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.5); /* Darker shadow */
+}
+
+/* Fix Inputs and Forms */
+body.dark-mode input, 
+body.dark-mode textarea {
+    background-color: #333;
+    color: #fff;
+    border-color: #555;
+}
+
+/* Fix Program Card Headlines in Dark Mode */
+body.dark-mode .program-card h3,
+body.dark-mode .program-card h4,
+body.dark-mode .program-card h2, 
+body.dark-mode .card h3 {
+    color: #ffffff !important;
+}
+/* Optional: Fix the description text in cards if that is also hard to read */
+body.dark-mode .program-card p,
+body.dark-mode .card p {
+    color: #e0e0e0;
+}
+
+/* Fix "Stay Ahead" Newsletter Section in Dark Mode */
+body.dark-mode .newsletter, 
+body.dark-mode .newsletter-section, 
+body.dark-mode .footer-top {
+    background-color: #1a1a1a !important; /* Dark grey background */
+    color: #ffffff !important;             /* White text */
+}
+
+/* Fix the Section Heading specifically */
+body.dark-mode .newsletter h2,
+body.dark-mode .newsletter-section h2 {
+    color: #ffffff !important;
+}
+
+/* Fix Input Fields in this section (often they stay white with white text) */
+body.dark-mode .newsletter input,
+body.dark-mode .newsletter-section input {
+    background-color: #333333;
+    color: #ffffff;
+    border: 1px solid #555;
+}
+
+/* =========================================
+   FINAL FIXES (Cards, Newsletter, Footer)
+========================================= */
+
+/* 1. Fix Card Headlines (H4) in Dark Mode */
+/* The program cards use <h4>, not just <h3> */
+body.dark-mode .card h4,
+body.dark-mode .program-card h4,
+body.dark-mode .card i, 
+body.dark-mode .program-card i {
+    color: #ffffff !important;
+}
+
+/* 2. Fix "Stay Ahead" Newsletter Section */
+/* Ensures the container is dark and text/inputs are visible */
+body.dark-mode .newsletter {
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+    border-top: 1px solid #333;
+}
+
+body.dark-mode .newsletter h3, 
+body.dark-mode .newsletter p {
+    color: #ffffff !important;
+}
+
+body.dark-mode .newsletter input {
+    background-color: #333 !important;
+    color: #fff !important;
+    border: 1px solid #555 !important;
+}
+
+
+
+
+
