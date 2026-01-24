@@ -469,7 +469,15 @@
           </div>
         </a>
       </div>
-    </section>
+    </a>
+  </div>
+</section>
+
+
+
+
+
+ main
 
     <section id="quiz-section">
       <div
@@ -792,18 +800,68 @@
     </script>
   </main>
 
+  <footer>
+    <p>
+      © 2026 OpenSource Compass ·
+      <a href="https://github.com/sayeeg-11/OpenSource-Compass">GitHub</a>
+    </p>
+  </footer>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const copyButtons = document.querySelectorAll(".copy-btn");
+
+    copyButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const link = btn.getAttribute("data-link");
+        const feedback = btn.nextElementSibling;
+        const icon = btn.querySelector("i");
+
+        navigator.clipboard.writeText(link).then(() => {
+          // Show feedback
+          feedback.style.display = "inline";
+
+          // Change icon to tick
+          icon.classList.remove("fa-copy");
+          icon.classList.add("fa-check");
+
+          // Reset after 1.5 sec
+          setTimeout(() => {
+            feedback.style.display = "none";
+            icon.classList.remove("fa-check");
+            icon.classList.add("fa-copy");
+          }, 1500);
+        });
+      });
+    });
+  });
+</script>
+
+
+
   <div id="footer"></div>
+ main
 
   <script src="../js/components.js"></script>
 
   <script src="../js/theme.js"></script>
 
+
+  <script src="../js/cChatbot.js"></script>
+  <script src="../js/recommendations.js"></script>
+
+      <section id="recommended-resources"></section>
+
+
   <script src="../js/chatbot.js"></script>
+
+  <script src="../js/resources.js"></script>
+
   <script src="../js/main.js"></script>
 
   <button id="scrollTopBtn" title="Back to Top">
     <i class="fas fa-chevron-up"></i>
   </button>
+ main
 </body>
 
 </html>
