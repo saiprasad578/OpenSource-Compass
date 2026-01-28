@@ -628,8 +628,9 @@ body.dark-mode footer.site-footer {
   display: none;
 }
 
-}
- main
+
+ main section.quiz-section {
+  padding: 3rem 6%;
 
 }
 
@@ -744,4 +745,22 @@ body.dark-mode .newsletter input {
   z-index: 9999;
 }
 
- main
+main {
+  padding-top: 60px;
+}
+
+ .profile-icon {
+    position: relative;
+}
+
+.profile-status {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 10px;
+    height: 10px;
+    background: #22c55e;
+    border: 2px solid #fff;
+    border-radius: 50%;
+}
+
