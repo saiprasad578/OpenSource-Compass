@@ -1,90 +1,141 @@
-// Profile icon functionality
-document.addEventListener('DOMContentLoaded', function() {
-    updateProfileIcon();
-});
+// =====================
+// PROFILE ICON SETUP
+// =====================
+document.addEventListener('DOMContentLoaded', updateProfileIcon);
 
 function updateProfileIcon() {
     const nav = document.querySelector('nav');
     if (!nav) return;
 
-    // Remove existing profile icon if any
-    const existingProfile = nav.querySelector('.profile-dropdown');
-    if (existingProfile) {
-        existingProfile.remove();
+    // Cleanup existing UI
+    nav.querySelectorAll('.profile-dropdown, .login-link').forEach(el => el.remove());
+
+    const user = getCurrentUser();
+
+    if (!user) {
+        renderLoginLink(nav);
+        return;
     }
 
-    const currentUser = getCurrentUser();
-    
-    if (currentUser) {
-        // User is logged in - show profile icon with dropdown
-        const profileDropdown = document.createElement('div');
-        profileDropdown.className = 'profile-dropdown';
-        
-        const profileIcon = document.createElement('div');
-        profileIcon.className = 'profile-icon';
-        profileIcon.textContent = currentUser.name.charAt(0).toUpperCase();
-        profileIcon.setAttribute('title', currentUser.name);
-        profileIcon.addEventListener('click', toggleProfileMenu);
-        
-        const profileMenu = document.createElement('div');
-        profileMenu.className = 'profile-menu';
-        profileMenu.id = 'profileMenu';
-        
-        const userName = document.createElement('div');
-        userName.className = 'profile-menu-item';
-        userName.style.fontWeight = '600';
-        userName.style.color = 'var(--primary-blue)';
-        userName.textContent = currentUser.name;
-        profileMenu.appendChild(userName);
-        
-        const userEmail = document.createElement('div');
-        userEmail.className = 'profile-menu-item';
-        userEmail.style.fontSize = '12px';
-        userEmail.style.color = '#666';
-        userEmail.textContent = currentUser.email;
-        profileMenu.appendChild(userEmail);
-        
-        const logoutLink = document.createElement('a');
-        logoutLink.href = '#';
-        logoutLink.className = 'profile-menu-item logout';
-        logoutLink.textContent = 'Logout';
-        logoutLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            logout();
-        });
-        profileMenu.appendChild(logoutLink);
-        
-        profileDropdown.appendChild(profileIcon);
-        profileDropdown.appendChild(profileMenu);
-        nav.appendChild(profileDropdown);
-    } else {
-        // User is not logged in - show login link
-        const loginLink = document.createElement('a');
-        loginLink.href = '../pages/login.html';
-        loginLink.textContent = 'Login';
-        loginLink.style.marginLeft = '24px';
-        nav.appendChild(loginLink);
-    }
+    const dropdown = document.createElement('div');
+    dropdown.className = 'profile-dropdown';
+
+    const icon = createProfileIcon(user);
+    const menu = createProfileMenu(user);
+
+    dropdown.append(icon, menu);
+    nav.appendChild(dropdown);
 }
 
-function toggleProfileMenu(e) {
-    e.stopPropagation();
+// =====================
+// PROFILE ICON
+// =====================
+function createProfileIcon(user) {
+    const icon = document.createElement('div');
+    icon.className = 'profile-icon';
+    icon.textContent = user.name[0].toUpperCase();
+    icon.title = user.name;
+
+    // Online status dot
+    const status = document.createElement('span');
+    status.className = 'profile-status';
+    icon.appendChild(status);
+
+    icon.addEventListener('click', e => {
+        e.stopPropagation();
+        toggleMenu();
+    });
+
+    return icon;
+}
+
+// =====================
+// PROFILE MENU
+// =====================
+function createProfileMenu(user) {
+    const menu = document.createElement('div');
+    menu.className = 'profile-menu';
+    menu.id = 'profileMenu';
+
+    menu.append(
+        menuItem(user.name, { bold: true }),
+        menuItem(user.email, { muted: true }),
+        logoutItem()
+    );
+
+    return menu;
+}
+
+// =====================
+// MENU ITEMS
+// =====================
+function menuItem(text, options = {}) {
+    const item = document.createElement('div');
+    item.className = 'profile-menu-item';
+    item.textContent = text;
+
+    if (options.bold) {
+        item.style.fontWeight = '600';
+        item.style.color = 'var(--primary-blue)';
+    }
+
+    if (options.muted) {
+        item.style.fontSize = '12px';
+        item.style.color = '#666';
+    }
+
+    return item;
+}
+
+function logoutItem() {
+    const item = document.createElement('a');
+    item.href = '#';
+    item.className = 'profile-menu-item logout';
+    item.textContent = 'Logout';
+
+    item.addEventListener('click', e => {
+        e.preventDefault();
+        logout();
+    });
+
+    return item;
+}
+
+// =====================
+// LOGIN LINK
+// =====================
+function renderLoginLink(nav) {
+    const link = document.createElement('a');
+    link.href = '../pages/login.html';
+    link.textContent = 'Login';
+    link.className = 'login-link';
+    link.style.marginLeft = '24px';
+    nav.appendChild(link);
+}
+
+// =====================
+// MENU TOGGLE & OUTSIDE CLICK
+// =====================
+function toggleMenu() {
     const menu = document.getElementById('profileMenu');
-    if (menu) {
-        menu.classList.toggle('active');
-        
-        // Close menu when clicking outside
-        if (menu.classList.contains('active')) {
-            setTimeout(() => {
-                document.addEventListener('click', function closeMenu(event) {
-                    if (!event.target.closest('.profile-dropdown')) {
-                        menu.classList.remove('active');
-                        document.removeEventListener('click', closeMenu);
-                    }
-                });
-            }, 0);
-        }
+    if (!menu) return;
+
+    menu.classList.toggle('active');
+
+    document.removeEventListener('click', handleOutsideClick);
+    if (menu.classList.contains('active')) {
+        document.addEventListener('click', handleOutsideClick);
     }
 }
 
-// Note: getCurrentUser() and logout() functions are defined in auth.js
+function handleOutsideClick(e) {
+    if (!e.target.closest('.profile-dropdown')) {
+        const menu = document.getElementById('profileMenu');
+        if (menu) menu.classList.remove('active');
+        document.removeEventListener('click', handleOutsideClick);
+    }
+}
+
+// auth.js must provide:
+// getCurrentUser()
+// logout()
